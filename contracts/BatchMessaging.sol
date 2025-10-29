@@ -171,13 +171,13 @@ contract BatchMessaging is ReentrancyGuard, Ownable {
         batch.isCompleted = false;
 
         // Process recipients
-        address[] memory validRecipients = new address[](_recipients.length);
+        address[] memory filteredRecipients = new address[](_recipients.length);
         uint256 validCount = 0;
 
         for (uint256 i = 0; i < _recipients.length; i++) {
             address recipient = _recipients[i];
             if (recipient != address(0) && recipient != msg.sender) {
-                validRecipients[validCount] = recipient;
+                filteredRecipients[validCount] = recipient;
                 batch.recipients.push(recipient);
                 batch.deliveryStatus[recipient] = false;
                 validCount++;
@@ -443,7 +443,6 @@ contract BatchMessaging is ReentrancyGuard, Ownable {
     /**
      * @dev Get batch message details
      * @param _batchId ID of the batch
-     * @return Batch message data
      */
     function getBatchMessage(uint256 _batchId) 
         external 
@@ -476,7 +475,6 @@ contract BatchMessaging is ReentrancyGuard, Ownable {
     /**
      * @dev Get recipient group details
      * @param _groupId ID of the group
-     * @return Group data
      */
     function getRecipientGroup(uint256 _groupId) 
         external 
@@ -505,7 +503,6 @@ contract BatchMessaging is ReentrancyGuard, Ownable {
     /**
      * @dev Get message template
      * @param _templateId ID of the template
-     * @return Template data
      */
     function getMessageTemplate(uint256 _templateId) 
         external 
